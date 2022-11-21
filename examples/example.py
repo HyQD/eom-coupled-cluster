@@ -51,7 +51,7 @@ eomccsd.compute_ground_state(
 
 y0 = eomccsd.get_amplitudes().asarray()
 
-tdeomccsd = TDEOMCCSD(system, eomccsd.t_2)
+tdeomccsd = TDEOMCCSD(system, [eomccsd.t_2])
 
 r = complex_ode(tdeomccsd).set_integrator("Rk4Integrator", dt=0.01)
 r.set_initial_value(y0, 0)
@@ -104,7 +104,7 @@ output = {
     "dipole_moment": np.array(dipole_moment),
 }
 
-np.savez("h_t_with_h0", **output)
+np.savez("h_t_with_h0_rho", **output)
 
 plt.plot(time, dipole_moment)
 # plt.plot(time,R0L0)

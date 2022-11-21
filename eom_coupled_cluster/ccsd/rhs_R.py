@@ -1,7 +1,8 @@
 from opt_einsum import contract
 
 
-def build_right_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, FW, o, v, np):
+def build_right_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t, FW, o, v, np):
+    t2 = t[0]
 
     sigma_0 = contract("em, me->", R1, f[o, v])
     sigma_0 += 0.25 * contract("efmn, mnef->", R2, u[o, o, v, v])
@@ -14,7 +15,9 @@ def build_right_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, FW, o, v, np):
     return sigma_0
 
 
-def build_right_sigma_ai(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, FW, o, v, np):
+def build_right_sigma_ai(V_t, f, u, R0, R1, R2, L0, L1, L2, t, FW, o, v, np):
+    t2 = t[0]
+
     sigma_ai = contract("ei, ae->ai", R1, FW["vv"])
     sigma_ai -= contract("am, mi->ai", R1, FW["oo"])
     sigma_ai += contract("aeim, me->ai", R2, f[o, v])
@@ -33,7 +36,8 @@ def build_right_sigma_ai(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, FW, o, v, np):
     return sigma_ai
 
 
-def build_right_sigma_abij(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, FW, o, v, np):
+def build_right_sigma_abij(V_t, f, u, R0, R1, R2, L0, L1, L2, t, FW, o, v, np):
+    t2 = t[0]
 
     sigma_abij = np.zeros(R2.shape, dtype=R2.dtype)
 

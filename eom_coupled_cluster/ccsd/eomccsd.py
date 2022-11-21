@@ -25,8 +25,8 @@ class EOMCCSD(CCSD):
         if t1_transform:
             from scipy.linalg import expm
 
-            T1 = np.zeros((self.system.l, self.system.l))
-            T1[self.system.v, self.system.o] += self.t_1.real
+            T1 = np.zeros((self.system.l, self.system.l), dtype=np.complex128)
+            T1[self.system.v, self.system.o] += self.t_1
             C = expm(T1)
             C_tilde = expm(-T1)
             self.system.change_basis(C=C, C_tilde=C_tilde)

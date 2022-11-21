@@ -104,7 +104,7 @@ output = {
     "dipole_moment": np.array(dipole_moment),
 }
 
-np.savez("h_t_with_h0_rho", **output)
+np.savez("d_t", **output)
 
 plt.plot(time, dipole_moment)
 # plt.plot(time,R0L0)

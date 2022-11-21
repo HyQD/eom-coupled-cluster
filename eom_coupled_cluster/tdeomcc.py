@@ -4,10 +4,10 @@ from coupled_cluster.cc_helper import AmplitudeContainer
 
 
 class TDEOMCC(TimeDependentCoupledCluster, metaclass=abc.ABCMeta):
-    def __init__(self, system, t2):
+    def __init__(self, system, t):
         super().__init__(system)
-        self.t2 = t2
-        self.construct_FW()
+        self.t = t
+        self.construct_hbar()
 
     @staticmethod
     def construct_amplitude_template(truncation, n, m, np):
@@ -26,7 +26,7 @@ class TDEOMCC(TimeDependentCoupledCluster, metaclass=abc.ABCMeta):
         return AmplitudeContainer(t=t, l=l, np=np)
 
     @abc.abstractmethod
-    def construct_FW(self):
+    def construct_hbar(self):
         pass
 
     def __call__(self, current_time, prev_amp):
@@ -47,13 +47,13 @@ class TDEOMCC(TimeDependentCoupledCluster, metaclass=abc.ABCMeta):
 
         t_new = [
             -1j
-            * rhs_t_func(V_t, f, u, *R_old, *L_old, self.t2, self.FW, o, v, np=self.np)
+            * rhs_t_func(V_t, f, u, *R_old, *L_old, self.t, self.hbar, o, v, np=self.np)
             for rhs_t_func in self.rhs_t_amplitudes()
         ]
 
         l_new = [
             1j
-            * rhs_l_func(V_t, f, u, *R_old, *L_old, self.t2, self.FW, o, v, np=self.np)
+            * rhs_l_func(V_t, f, u, *R_old, *L_old, self.t, self.hbar, o, v, np=self.np)
             for rhs_l_func in self.rhs_l_amplitudes()
         ]
 

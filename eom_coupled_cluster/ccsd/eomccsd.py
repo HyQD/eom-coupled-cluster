@@ -27,9 +27,9 @@ class EOMCCSD(CCSD):
 
             T1 = np.zeros((self.system.l, self.system.l), dtype=np.complex128)
             T1[self.system.v, self.system.o] += self.t_1
-            C = expm(T1)
-            C_tilde = expm(-T1)
-            self.system.change_basis(C=C, C_tilde=C_tilde)
+            self.C = expm(T1)
+            self.C_tilde = expm(-T1)
+            self.system.change_basis(C=self.C, C_tilde=self.C_tilde)
 
     def get_amplitudes(self):
         return AmplitudeContainer(

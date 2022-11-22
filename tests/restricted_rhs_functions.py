@@ -2,6 +2,7 @@ import numpy as np
 from eom_coupled_cluster.rccsd.rhs_R import (
     build_right_sigma_ai_drudge,
     build_right_sigma_abij_drudge,
+    build_right_sigma_0,
     build_right_sigma_ai,
     build_right_sigma_abij,
 )
@@ -58,11 +59,15 @@ hbar = {
     "vvvv": build_Hvvvv(u, t2, o, v, np),
 }
 
+r0 = build_right_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np)
+
 r1_factorized = build_right_sigma_ai(
     V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np
 )
 r2_factorized = build_right_sigma_abij(
     V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np
 )
+
+print(r0)
 print(np.allclose(r1_factorized, test_r1))
 print(np.allclose(r2_factorized, test_r2))

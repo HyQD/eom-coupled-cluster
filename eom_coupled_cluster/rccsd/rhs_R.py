@@ -1,6 +1,15 @@
 from opt_einsum import contract
 
-
+def build_right_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t, FW, o, v, np):
+    
+    sigma_0 = 2 * contract("ai, ia->", R1, V_t[o, v])
+    sigma_0 += 2 * contract("ai, ia->", R1, f[o, v])
+    sigma_0 += 2 * contract("abij, ijab->", R2, u[o,o,v,v])
+    sigma_0 -= contract("abij, ijba->", R2, u[o,o,v,v])
+    #sigma_0 += 2 * R0 * contract("abij, ijab", t2, u[o,o,v,v])
+    #sigma_0 -= R0 * contract("abij, ijba", t2, u[o,o,v,v])
+    return sigma_0
+    
 def build_right_sigma_ai(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, Hbar, o, v, np):
 
     sigma_ai = 2.0 * contract("eami,me->ai", R2, Hbar["ov"])

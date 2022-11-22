@@ -17,6 +17,21 @@ def build_right_sigma_ai(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, Hbar, o, v, np):
     sigma_ai -= 2.0 * contract("mnie,aemn->ai", Hbar["ooov"], R2)
     sigma_ai += contract("nmie,aemn->ai", Hbar["ooov"], R2)
 
+    # Contributions due to time-dependent one-body operator V_t(t)
+    sigma_ai += contract("bi,ab->ai", R1, V_t[v, v])
+
+    sigma_ai += R0 * V_t[v, o]
+
+    sigma_ai -= contract("jb,abji->ai", V_t[o, v], R2)
+
+    sigma_ai += 2 * contract("jb,abij->ai", V_t[o, v], R2)
+
+    sigma_ai -= R0 * contract("jb,abji->ai", V_t[o, v], t2)
+
+    sigma_ai += 2 * R0 * contract("jb,abij->ai", V_t[o, v], t2)
+
+    sigma_ai -= contract("aj,ji->ai", R1, V_t[o, o])
+
     return sigma_ai
 
 
@@ -51,7 +66,48 @@ def build_right_sigma_abij(
 
     sigma_abij += 2.0 * contract("eami,mbej->abij", R2, Hbar["ovvo"])
     sigma_abij -= contract("eami,mbje->abij", R2, Hbar["ovov"])
-    return sigma_abij + sigma_abij.swapaxes(0, 1).swapaxes(2, 3)
+    sigma_abij = sigma_abij + sigma_abij.swapaxes(0, 1).swapaxes(2, 3)
+
+    # Contributions due to time-dependent one-body operator V_t(t)
+    sigma_abij += contract("ac,bcji->abij", V_t[v, v], R2)
+
+    sigma_abij += contract("bc,acij->abij", V_t[v, v], R2)
+
+    sigma_abij += R0 * contract("ac,bcji->abij", V_t[v, v], t2)
+
+    sigma_abij += R0 * contract("bc,acij->abij", V_t[v, v], t2)
+
+    sigma_abij += contract("ai,bj->abij", R1, V_t[v, o])
+
+    sigma_abij += contract("bj,ai->abij", R1, V_t[v, o])
+
+    sigma_abij -= contract("ki,abkj->abij", V_t[o, o], R2)
+
+    sigma_abij -= contract("kj,abik->abij", V_t[o, o], R2)
+
+    # sigma_abij += 2 * contract("kk,abij->abij", V_t, R2)
+
+    sigma_abij -= R0 * contract("ki,abkj->abij", V_t[o, o], t2)
+
+    sigma_abij -= R0 * contract("kj,abik->abij", V_t[o, o], t2)
+
+    sigma_abij -= contract("ai,kc,bckj->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("ak,kc,bcji->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("bj,kc,acki->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("bk,kc,acij->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("ci,kc,abkj->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("cj,kc,abik->abij", R1, V_t[o, v], t2)
+
+    sigma_abij += 2 * contract("ai,kc,bcjk->abij", R1, V_t[o, v], t2)
+
+    sigma_abij += 2 * contract("bj,kc,acik->abij", R1, V_t[o, v], t2)
+
+    return sigma_abij
 
 
 def build_right_sigma_ai_drudge(
@@ -93,6 +149,21 @@ def build_right_sigma_ai_drudge(
     sigma_ai -= contract("bcij,ajcb->ai", R2, u[v, o, v, v])
 
     sigma_ai += 2 * contract("bcij,ajbc->ai", R2, u[v, o, v, v])
+
+    # Contributions due to time-dependent one-body operator V_t(t)
+    sigma_ai += contract("bi,ab->ai", R1, V_t[v, v])
+
+    sigma_ai += R0 * V_t[v, o]
+
+    sigma_ai -= contract("jb,abji->ai", V_t[o, v], R2)
+
+    sigma_ai += 2 * contract("jb,abij->ai", V_t[o, v], R2)
+
+    sigma_ai -= R0 * contract("jb,abji->ai", V_t[o, v], t2)
+
+    sigma_ai += 2 * R0 * contract("jb,abij->ai", V_t[o, v], t2)
+
+    sigma_ai -= contract("aj,ji->ai", R1, V_t[o, o])
 
     return sigma_ai
 
@@ -270,5 +341,44 @@ def build_right_sigma_abij_drudge(
     sigma_abij += 4 * contract("acik,bdjl,klcd->abij", R2, t2, u[o, o, v, v])
 
     sigma_abij += 4 * contract("bcjk,adil,klcd->abij", R2, t2, u[o, o, v, v])
+
+    # Contributions due to time-dependent one-body operator V_t(t)
+    sigma_abij += contract("ac,bcji->abij", V_t[v, v], R2)
+
+    sigma_abij += contract("bc,acij->abij", V_t[v, v], R2)
+
+    sigma_abij += R0 * contract("ac,bcji->abij", V_t[v, v], t2)
+
+    sigma_abij += R0 * contract("bc,acij->abij", V_t[v, v], t2)
+
+    sigma_abij += contract("ai,bj->abij", R1, V_t[v, o])
+
+    sigma_abij += contract("bj,ai->abij", R1, V_t[v, o])
+
+    sigma_abij -= contract("ki,abkj->abij", V_t[o, o], R2)
+
+    sigma_abij -= contract("kj,abik->abij", V_t[o, o], R2)
+
+    # sigma_abij += 2 * contract("kk,abij->abij", V_t, R2)
+
+    sigma_abij -= R0 * contract("ki,abkj->abij", V_t[o, o], t2)
+
+    sigma_abij -= R0 * contract("kj,abik->abij", V_t[o, o], t2)
+
+    sigma_abij -= contract("ai,kc,bckj->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("ak,kc,bcji->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("bj,kc,acki->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("bk,kc,acij->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("ci,kc,abkj->abij", R1, V_t[o, v], t2)
+
+    sigma_abij -= contract("cj,kc,abik->abij", R1, V_t[o, v], t2)
+
+    sigma_abij += 2 * contract("ai,kc,bcjk->abij", R1, V_t[o, v], t2)
+
+    sigma_abij += 2 * contract("bj,kc,acik->abij", R1, V_t[o, v], t2)
 
     return sigma_abij

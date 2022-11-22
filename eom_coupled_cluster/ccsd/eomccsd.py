@@ -31,7 +31,7 @@ class EOMCCSD(CCSD):
             self.C_tilde = expm(-T1)
             self.system.change_basis(C=self.C, C_tilde=self.C_tilde)
 
-    def get_amplitudes(self):
+    def get_amplitudes(self,get_t_0=True):
         return AmplitudeContainer(
             t=[self.R0, self.R1, self.R2], l=[self.L0, self.L1, self.L2], np=self.np
         )

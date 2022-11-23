@@ -72,7 +72,7 @@ def build_Foo(f, Looov, Loovv, t2, o, v, np):
     """
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hoo = np.zeros((nocc, nocc), dtype=t2.dtype)
+    Hoo = np.zeros((nocc, nocc), dtype=np.complex128)
 
     Hoo += f[o, o]
     Hoo += contract("efin,mnef->mi", t2, Loovv)
@@ -86,7 +86,7 @@ def build_Fvv(f, Lvovv, Loovv, t2, o, v, np):
     """
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hvv = np.zeros((nvirt, nvirt), dtype=t2.dtype)
+    Hvv = np.zeros((nvirt, nvirt), dtype=np.complex128)
 
     Hvv = f[v, v].copy()
     Hvv -= contract("famn,mnfe->ae", t2, Loovv)
@@ -100,7 +100,7 @@ def build_Hoooo(u, t2, o, v, np):
     """
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hoooo = np.zeros((nocc, nocc, nocc, nocc), dtype=t2.dtype)
+    Hoooo = np.zeros((nocc, nocc, nocc, nocc), dtype=np.complex128)
 
     Hoooo += u[o, o, o, o]
     Hoooo += contract("efij,mnef->mnij", t2, u[o, o, v, v])
@@ -114,7 +114,7 @@ def build_Hvvvv(u, t2, o, v, np):
     """
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hvvvv = np.zeros((nvirt, nvirt, nvirt, nvirt), dtype=t2.dtype)
+    Hvvvv = np.zeros((nvirt, nvirt, nvirt, nvirt), dtype=np.complex128)
 
     Hvvvv += u[v, v, v, v]
     Hvvvv += contract("abmn,mnef->abef", t2, u[o, o, v, v])
@@ -125,7 +125,7 @@ def build_Hvovv(u, t2, o, v, np):
     """<am|Hbar|ef> = <am||ef> - t_na <nm||ef>"""
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hvovv = np.zeros((nvirt, nocc, nvirt, nvirt), dtype=t2.dtype)
+    Hvovv = np.zeros((nvirt, nocc, nvirt, nvirt), dtype=np.complex128)
 
     Hvovv += u[v, o, v, v]
     return Hvovv
@@ -135,7 +135,7 @@ def build_Hooov(u, t2, o, v, np):
     """<mn|Hbar|ie> = <mn||ie> + t_if <mn||fe>"""
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hooov = np.zeros((nocc, nocc, nocc, nvirt), dtype=t2.dtype)
+    Hooov = np.zeros((nocc, nocc, nocc, nvirt), dtype=np.complex128)
 
     Hooov += u[o, o, o, v]
     return Hooov
@@ -148,7 +148,7 @@ def build_Hovvo(u, Loovv, t2, o, v, np):
     """
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hovvo = np.zeros((nocc, nvirt, nvirt, nocc), dtype=t2.dtype)
+    Hovvo = np.zeros((nocc, nvirt, nvirt, nocc), dtype=np.complex128)
 
     Hovvo += u[o, v, v, o]
     Hovvo -= contract("fbjn,nmfe->mbej", t2, u[o, o, v, v])
@@ -163,7 +163,7 @@ def build_Hovov(u, t2, o, v, np):
     """
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hovov = np.zeros((nocc, nvirt, nocc, nvirt), dtype=t2.dtype)
+    Hovov = np.zeros((nocc, nvirt, nocc, nvirt), dtype=np.complex128)
 
     Hovov += u[o, v, o, v]
     Hovov -= contract("fbjn,nmef->mbje", t2, u[o, o, v, v])
@@ -177,7 +177,7 @@ def build_Hvvvo(f, u, Loovv, Lvovv, t2, o, v, np):
     """
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hvvvo = np.zeros((nvirt, nvirt, nvirt, nocc), dtype=t2.dtype)
+    Hvvvo = np.zeros((nvirt, nvirt, nvirt, nocc), dtype=np.complex128)
 
     # <ab||ei>
 
@@ -206,7 +206,7 @@ def build_Hovoo(f, u, Loovv, Looov, t2, o, v, np):
     """
     nocc = t2.shape[2]
     nvirt = t2.shape[0]
-    Hovoo = np.zeros((nocc, nvirt, nocc, nocc), dtype=t2.dtype)
+    Hovoo = np.zeros((nocc, nvirt, nocc, nocc), dtype=np.complex128)
 
     # <mb||ij>
 

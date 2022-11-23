@@ -6,6 +6,10 @@ from eom_coupled_cluster.rccsd.rhs_R import (
     build_right_sigma_ai,
     build_right_sigma_abij,
 )
+from eom_coupled_cluster.rccsd.rhs_L import (
+    build_left_sigma_ia,
+    build_left_sigma_ijab,
+)
 from eom_coupled_cluster.rccsd.hbar import *
 
 nv = 20
@@ -60,11 +64,17 @@ hbar = {
 }
 
 r0 = build_right_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np)
-
 r1_factorized = build_right_sigma_ai(
     V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np
 )
 r2_factorized = build_right_sigma_abij(
+    V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np
+)
+
+l1_factorized = build_left_sigma_ia(
+    V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np
+)
+l2_factorized = build_left_sigma_ijab(
     V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np
 )
 

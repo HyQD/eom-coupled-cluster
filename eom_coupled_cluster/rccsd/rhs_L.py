@@ -1,8 +1,8 @@
 from opt_einsum import contract
 
 
-def build_left_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, FW, o, v, np):
-
+def build_left_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t, FW, o, v, np):
+    t2 = t[0]
     sigma_0 = contract("ia, ai->", L1, V_t[v, o])
     sigma_0 += 2 * contract("ia, jb, abij->", L1, V_t[o, v], t2)
     sigma_0 -= contract("ia, jb, abji->", L1, V_t[o, v], t2)
@@ -11,8 +11,8 @@ def build_left_sigma_0(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, FW, o, v, np):
     return sigma_0
 
 
-def build_left_sigma_ia(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, Hbar, o, v, np):
-
+def build_left_sigma_ia(V_t, f, u, R0, R1, R2, L0, L1, L2, t, Hbar, o, v, np):
+    t2 = t[0]
     # l1 equations
     sigma_ia = 2.0 * Hbar["ov"] * L0
     sigma_ia += contract("ie,ea->ia", L1, Hbar["vv"])
@@ -40,9 +40,9 @@ def build_left_sigma_ia(V_t, f, u, R0, R1, R2, L0, L1, L2, t2, Hbar, o, v, np):
 
 
 def build_left_sigma_ijab(
-    V_t, f, u, R0, R1, R2, L0, L1, L2, t2, Hbar, o, v, np
+    V_t, f, u, R0, R1, R2, L0, L1, L2, t, Hbar, o, v, np
 ):
-
+    t2 = t[0]
     tmp = u[o, o, v, v].copy()
     Loovv = 2.0 * tmp - tmp.swapaxes(2, 3)
 

@@ -11,6 +11,9 @@ from eom_coupled_cluster.rccsd.rhs_L import (
     build_left_sigma_ia,
     build_left_sigma_ijab,
 )
+from eom_coupled_cluster.rccsd.density_matrices import (
+    compute_one_body_density_matrix,
+)
 from eom_coupled_cluster.rccsd.hbar import *
 
 nv = 20
@@ -78,6 +81,10 @@ l1_factorized = build_left_sigma_ia(
 )
 l2_factorized = build_left_sigma_ijab(
     V_t, f, u, R0, R1, R2, L0, L1, L2, t2, hbar, o, v, np
+)
+
+rho_qp = compute_one_body_density_matrix(
+    R0, R1, R2, L0, L1, L2, t2, o, v, np, out=None
 )
 
 print(r0)
